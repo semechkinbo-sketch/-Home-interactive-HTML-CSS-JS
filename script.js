@@ -3,6 +3,7 @@ window.onload = () => {
   const celestial = document.getElementById('celestial');
   const windowEl = document.getElementById('window');
   const doorEl = document.getElementById('door');
+  const doorFrame = document.getElementById('doorFrame');
   const chimneyEl = document.getElementById('chimney');
   const smokeEl = document.getElementById('smoke');
   const birdEl = document.getElementById('bird');
@@ -126,17 +127,26 @@ window.onload = () => {
     starsContainer.appendChild(star);
   }
 
+  const toggleLight = () => {
+    windowEl.classList.toggle('lit');
+    doorFrame.classList.toggle('dimmed', !windowEl.classList.contains('lit'));
+    playSwitch();
+  };
+
   celestial.addEventListener('click', () => {
     document.body.classList.toggle('night');
     const isNight = document.body.classList.contains('night');
     playChime(isNight);
-    windowEl.classList.toggle('lit', isNight);
+    if (isNight) {
+      windowEl.classList.remove('lit');
+      doorFrame.classList.add('dimmed');
+    } else {
+      windowEl.classList.add('lit');
+      doorFrame.classList.remove('dimmed');
+    }
   });
 
-  windowEl.addEventListener('click', () => {
-    windowEl.classList.toggle('lit');
-    playSwitch();
-  });
+  windowEl.addEventListener('click', toggleLight);
 
   doorEl.addEventListener('click', () => {
     doorEl.classList.toggle('open');
