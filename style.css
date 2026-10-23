@@ -5,7 +5,6 @@
   --house-wall: #f6e58d;
   --house-roof: #eb4d4b;
   --door-color: #6e473b;
-  --window-bg: #2c3e50;
   --bird-color: #00a8ff;
   --card-shadow: 0 25px 50px rgba(0,0,0,0.45);
 }
@@ -228,25 +227,39 @@ body.night .cloud { opacity: 0.22; }
   left: 22px;
   width: 46px;
   height: 46px;
-  background: var(--window-bg);
   border: 3.5px solid #fff;
   border-radius: 9px;
   cursor: pointer;
-  overflow: hidden;
-  transition: all 0.4s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-.window::before, .window::after {
-  content: '';
-  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
   background: #fff;
-  z-index: 2;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
-.window::before { width: 100%; height: 3px; top: 50%; transform: translateY(-50%); }
-.window::after { height: 100%; width: 3px; left: 50%; transform: translateX(-50%); }
+.window:hover { transform: scale(1.05); }
+
+.win-pane {
+  width: 100%;
+  height: 100%;
+  transition: background 0.5s ease, filter 0.5s ease;
+}
+
+.win-red { background: #e74c3c; }
+.win-green { background: #2ecc71; }
+.win-blue { background: #3498db; }
+.win-yellow { background: #f1c40f; }
+
+.window:not(.lit) .win-pane {
+  filter: brightness(0.35) saturate(0.5);
+}
 .window.lit {
-  background: #ffda79;
-  box-shadow: 0 0 28px rgba(255, 218, 121, 0.9);
+  box-shadow: 0 0 22px rgba(255, 218, 121, 0.85);
+}
+.window:not(.lit) {
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
 }
 
 .door-frame {
@@ -260,8 +273,14 @@ body.night .cloud { opacity: 0.22; }
   border: 3.5px solid #fff;
   border-bottom: none;
   perspective: 400px;
+  transition: background 0.4s ease;
   box-shadow: inset 0 0 15px rgba(255, 165, 2, 0.85);
 }
+.door-frame.dimmed {
+  background: #3e2822 !important;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
+}
+
 .door {
   width: 100%;
   height: 100%;
@@ -271,6 +290,7 @@ body.night .cloud { opacity: 0.22; }
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
+  z-index: 2;
 }
 .door::after {
   content: '';
